@@ -4,6 +4,16 @@ import "./styles/index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
+import { Provider } from "react-redux";
+import { applyMiddleware, legacy_createStore as createStore } from "redux";
+import rootReducer from "./modules";
+import { thunk } from "redux-thunk";
+
+const store = createStore(
+  rootReducer,
+  window.__PRELOADED_STATE__, // 이 값을 초기 상태로 사용함.
+  applyMiddleware(thunk),
+);
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement,
@@ -11,9 +21,11 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </Provider>
   </React.StrictMode>,
 );
 
